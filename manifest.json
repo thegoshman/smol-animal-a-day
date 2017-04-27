@@ -1,0 +1,15 @@
+{
+  "name": "Daily Smol Animal Calendar",
+  "description": "A new picture of a smol animal every day!",
+  "version": "0.0",
+  "incognito": "split",
+  "chrome_url_overrides": {
+    "newtab": "smol-animals.html"
+  },
+  "manifest_version": 2, 
+  "permissions": [
+  		"storage", 
+  		"https://www.googleapis.com/*"
+  				 ]
+}
+

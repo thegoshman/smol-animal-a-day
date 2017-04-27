@@ -1,0 +1,39 @@
+.day {
+  height: 12vw;
+  width: 12vw;
+  border: 1px solid #777;
+  float: left;
+  display: inline-block;
+  margin: 5px;
+  position: relative;
+
+}
+
+.day img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+}
+
+.unclicked img {
+	display: none;
+	width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+}
+
+.clicked img {
+	display: inherit;
+	width: 100%;
+ 	height: 100%;
+  	position: absolute;
+  	z-index: -1;
+  	top: 0;
+  	right: 0;
+}
