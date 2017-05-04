@@ -1,9 +1,9 @@
 var newAnimals;
 var smolAnimals = [];
-var i;
 var savedAnimals = [];
+var i;
 
-function httpGetAsync(theUrl, callback) {
+function httpGetAsync(theUrl, callback) {  //make API call 
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
@@ -13,10 +13,10 @@ function httpGetAsync(theUrl, callback) {
     xmlHttp.send(null);
 }
 
-function getCuteness(i) {
+function getCuteness(i) {  //calls the API results page i and adds those 10 results to the smolAnimals array, returns the array
   httpGetAsync('https://www.googleapis.com/customsearch/v1?q=smol+animal&searchType=image&imgType=photo&key=AIzaSyCH4Rnngqjbt6YATpbHWNfvJshZYiG7xQQ&cx=001985054786931384945%3Avlg7_fusw5u&start=' + i, function(data) {
     var data = JSON.parse(data);
-    for (var j = 0; j < 10; j++)
+    for (var j = 0; j < 10; j++) //iterates through the 10 search results on each page
     {
     newAnimals = data.items;
     smolAnimals.push(newAnimals[j]);
@@ -26,7 +26,7 @@ function getCuteness(i) {
    return smolAnimals;
  }
 
-function DrawCalendar() 
+function DrawCalendar() //creates boxes for each day in the div container
 {
 var container = document.getElementsByClassName('container')[0];
 var year = new Date().getFullYear();
@@ -38,13 +38,7 @@ for (var i = 1; i <= daysInMonth; i++)
     var day = getDay(i);
     container.appendChild(day);
       }
-
-for (var j=0; j < savedAnimals.length; j++)
-  {
-    box=document.getElementByID(savedAnimals[j].date);
-    console.log(box);
-    //WHAT I NEED TO DO HERE IS ADD THE IMAGE FOR EACH DAY
-  }
+getStoredAnimals();
 }
 
 function getDay(num) 
@@ -55,6 +49,20 @@ function getDay(num)
   day.innerHTML = num;
   day.addEventListener('click', handleClick);
   return day;
+}
+
+function getStoredAnimals()
+{
+  savedAnimals = chrome.storage.sync.get('revealedImages', function()
+  {
+    console.log('animals loaded!'); 
+  });
+  for (var j=0; j < savedAnimals.length; j++)
+    {
+      box=document.getElementByID(savedAnimals[j].date);
+      console.log(box);
+      //WHAT I NEED TO DO HERE IS ADD THE IMAGE FOR EACH DAY
+    }
 }
 
 function getRandomThing(array) {
@@ -90,12 +98,19 @@ function handleClick(event) {
           day:date,
           url:img.src,
         }];
-        savedAnimals.push(todaysAnimal);
- //       chrome.storage.sync.set({'revealedImages': {}}, function() {
- //     });
- 
+          savedAnimals.push(todaysAnimal);
+        storeClickedAnimals(savedAnimals); 
 }
 
+function storeClickedAnimals(array) {  //HAVING PROBLEMS IN THIS SECTION I THINK
+        chrome.storage.sync.set({'revealedImages': {array}}, function() {
+        console.log('Animals saved!'); 
+        });
+};
+
+function clearStorage(){
+  reset = document.getElementByID('reset')
+}
 
 for (var i = 1; i < 42; i+=10) {
 getCuteness(i);
