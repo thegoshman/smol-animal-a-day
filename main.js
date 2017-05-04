@@ -53,7 +53,7 @@ function getDay(num)
 
 function getStoredAnimals()
 {
-  savedAnimals = chrome.storage.sync.get('revealedImages', function()
+  savedAnimals = chrome.storage.sync.get('revealedImages', function() //definitely having some issue with getting the array back out of storage in the right format - am somewhat confused with keys/values/etc.
   {
     console.log('animals loaded!'); 
   });
@@ -110,6 +110,7 @@ function storeClickedAnimals(array) {  //HAVING PROBLEMS IN THIS SECTION I THINK
 
 function clearStorage(){
   reset = document.getElementByID('reset')
+  //need to add this on click: chrome.storage.sync.clear
 }
 
 for (var i = 1; i < 42; i+=10) {
