@@ -57,11 +57,15 @@ function getStoredAnimals()
   {
     console.log('animals loaded!'); 
   });
-  for (var j=0; j < savedAnimals.length; j++)
+    if(savedAnimals.length === 0)
+    {
+      return;
+    }
+    for (var j=0; j < savedAnimals.length; j++)
     {
       box=document.getElementByID(savedAnimals[j].date);
-      console.log(box);
-      //WHAT I NEED TO DO HERE IS ADD THE IMAGE FOR EACH DAY
+      var img=savedAnimals[j].url; 
+      box.appendChild(img); 
     }
 }
 
