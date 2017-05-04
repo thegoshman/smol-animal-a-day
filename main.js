@@ -53,9 +53,11 @@ function getDay(num)
 
 function getStoredAnimals()
 {
-  savedAnimals = chrome.storage.sync.get('revealedImages', function() //definitely having some issue with getting the array back out of storage in the right format - am somewhat confused with keys/values/etc.
+chrome.storage.sync.get('revealedImages', function(images) //definitely having some issue with getting the array back out of storage in the right format - am somewhat confused with keys/values/etc.
   {
-    console.log('animals loaded!'); 
+    savedAnimals=images;
+    console.log(savedAnimals);
+    console.log("i'm inside getStoredAnimals function")
   });
     if(savedAnimals.length === 0)
     {
@@ -64,7 +66,8 @@ function getStoredAnimals()
     for (var j=0; j < savedAnimals.length; j++)
     {
       box=document.getElementByID(savedAnimals[j].date);
-      var img=savedAnimals[j].url; 
+      var img=savedAnimals[j].url;
+      debugger;
       box.appendChild(img); 
     }
 }
@@ -107,14 +110,18 @@ function handleClick(event) {
 }
 
 function storeClickedAnimals(array) {  //HAVING PROBLEMS IN THIS SECTION I THINK
-        chrome.storage.sync.set({'revealedImages': {array}}, function() {
+        var month = new Date().getMonth() + 1;
+        chrome.storage.sync.set({'revealedImages': array, 'month': month}, function() {
         console.log('Animals saved!'); 
         });
 };
 
 function clearStorage(){
-  reset = document.getElementByID('reset')
-  //need to add this on click: chrome.storage.sync.clear
+  reset = document.getElementByID('reset'); 
+  reset.addEventListener('click', function()
+  {
+    chrome.storage.sync.clear;
+  });
 }
 
 for (var i = 1; i < 42; i+=10) {
