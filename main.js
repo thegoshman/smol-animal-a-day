@@ -1,6 +1,7 @@
 var newAnimals;
 var smolAnimals = [];
 var savedAnimals = [];
+var loadedAnimals = [];
 var i;
 
 function httpGetAsync(theUrl, callback) {  //make API call 
@@ -55,19 +56,17 @@ function getStoredAnimals()
 {
 chrome.storage.sync.get('revealedImages', function(images) //definitely having some issue with getting the array back out of storage in the right format - am somewhat confused with keys/values/etc.
   {
-    savedAnimals=images;
-    console.log(savedAnimals);
-    console.log("i'm inside getStoredAnimals function")
+    loadedAnimals = images.revealedImages.array;
+    console.log(loadedAnimals);
   });
-    if(savedAnimals.length === 0)
+    if(loadedAnimals.length === 0)
     {
       return;
     }
-    for (var j=0; j < savedAnimals.length; j++)
+    for (var j=1; j < loadedAnimals.length; j++)
     {
-      box=document.getElementByID(savedAnimals[j].date);
-      var img=savedAnimals[j].url;
-      debugger;
+      box=document.getElementByID(loadedAnimals[j].date);
+      var img=laodedAnimals[j].url;
       box.appendChild(img); 
     }
 }
