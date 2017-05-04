@@ -38,7 +38,8 @@ for (var i = 1; i <= daysInMonth; i++)
   {
     var day = getDay(i);
     container.appendChild(day);
-      }
+  }
+checkMonth(month);
 getStoredAnimals();
 }
 
@@ -52,25 +53,43 @@ function getDay(num)
   return day;
 }
 
+function checkMonth(currentMonth)
+{
+  chrome.storage.sync.get('month', function(data) //if the stored data is from a separate month, clear it out. 
+  {
+    var storedmonth = data.month;
+    if (storedmonth != currentMonth) 
+    {
+          chrome.storage.sync.clear();
+          console.log("storage clear!")
+    }
+  });
+}
+
 function getStoredAnimals()
 {
 chrome.storage.sync.get('revealedImages', function(images) //definitely having some issue with getting the array back out of storage in the right format - am somewhat confused with keys/values/etc.
   {
-    loadedAnimals = images.revealedImages.array;
+    loadedAnimals = images.revealedImages;
     console.log(loadedAnimals);
+    displayStoredAnimals(loadedAnimals);
   });
-    if(loadedAnimals.length === 0)
-    {
-      return;
-    }
-    for (var j=1; j < loadedAnimals.length; j++)
-    {
-      box=document.getElementByID(loadedAnimals[j].date);
-      var img=laodedAnimals[j].url;
-      box.appendChild(img); 
-    }
 }
 
+function displayStoredAnimals(loadedAnimals) 
+{
+if (loadedAnimals === undefined)
+{
+  return;
+}
+for (var j=1; j <= loadedAnimals.length; j++)
+    {
+      var box = document.getElementById(j);
+      var img = document.createElement('img');
+      img.src = loadedAnimals[j-1].url;
+      box.appendChild(img);
+    }
+}
 function getRandomThing(array) {
   var randomNumberBetween0and1 = Math.random(); 
   var highestNumber = array.length; 
@@ -100,30 +119,23 @@ function handleClick(event) {
       }
         var img=getImage();
         event.target.appendChild(img);
-        var todaysAnimal = [{
+        var todaysAnimal = {
           day:date,
           url:img.src,
-        }];
+        };
           savedAnimals.push(todaysAnimal);
         storeClickedAnimals(savedAnimals); 
 }
 
-function storeClickedAnimals(array) {  //HAVING PROBLEMS IN THIS SECTION I THINK
+function storeClickedAnimals(array) {  //puts the revealed animals and the current month into chrome storage
         var month = new Date().getMonth() + 1;
         chrome.storage.sync.set({'revealedImages': array, 'month': month}, function() {
         console.log('Animals saved!'); 
+        console.log(array);
         });
 };
 
-function clearStorage(){
-  reset = document.getElementByID('reset'); 
-  reset.addEventListener('click', function()
-  {
-    chrome.storage.sync.clear;
-  });
-}
-
-for (var i = 1; i < 42; i+=10) {
+for (var i = 1; i < 62; i+=10) {
 getCuteness(i);
 };
 
