@@ -39,8 +39,8 @@ for (var i = 1; i <= daysInMonth; i++)
     var day = getDay(i);
     container.appendChild(day);
   }
-checkMonth(month);
-getStoredAnimals();
+checkMonth(month); //checks to see if there is stored data from the current month
+getStoredAnimals(); //loads and displays any animals that have already been revealed
 }
 
 function getDay(num) 
@@ -61,7 +61,6 @@ function checkMonth(currentMonth)
     if (storedmonth != currentMonth) 
     {
           chrome.storage.sync.clear();
-          console.log("storage clear!")
     }
   });
 }
@@ -71,17 +70,16 @@ function getStoredAnimals()
 chrome.storage.sync.get('revealedImages', function(images) //definitely having some issue with getting the array back out of storage in the right format - am somewhat confused with keys/values/etc.
   {
     loadedAnimals = images.revealedImages;
-    console.log(loadedAnimals);
     displayStoredAnimals(loadedAnimals);
   });
 }
 
 function displayStoredAnimals(loadedAnimals) 
 {
-if (loadedAnimals === undefined)
-{
-  return;
-}
+  if (loadedAnimals === undefined)
+    {
+    return;
+  }
 for (var j=1; j <= loadedAnimals.length; j++)
     {
       var box = document.getElementById(j);
@@ -90,6 +88,7 @@ for (var j=1; j <= loadedAnimals.length; j++)
       box.appendChild(img);
     }
 }
+
 function getRandomThing(array) {
   var randomNumberBetween0and1 = Math.random(); 
   var highestNumber = array.length; 
@@ -101,16 +100,16 @@ function getRandomThing(array) {
 function getImage()
 { 
   var img = document.createElement('img');
-    var animal = getRandomThing(smolAnimals); 
-    img.src = animal.link; 
-    return img;
+  var animal = getRandomThing(smolAnimals); 
+  img.src = animal.link; 
+  return img;
 }
 
 function handleClick(event) {
     if(event.target.childElementCount > 0) 
-    {
+      {
       return;
-    }
+      }
     var today = new Date().getDate();
     var date = event.target.innerHTML;
     if (date > today) 
@@ -130,8 +129,6 @@ function handleClick(event) {
 function storeClickedAnimals(array) {  //puts the revealed animals and the current month into chrome storage
         var month = new Date().getMonth() + 1;
         chrome.storage.sync.set({'revealedImages': array, 'month': month}, function() {
-        console.log('Animals saved!'); 
-        console.log(array);
         });
 };
 
