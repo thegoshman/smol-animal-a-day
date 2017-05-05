@@ -1,8 +1,9 @@
-var newAnimals;
-var smolAnimals = [];
+var randomInteger;
+var newAnimals = [];
 var savedAnimals = [];
 var loadedAnimals = [];
-var i;
+
+var today = new Date().getDate();
 
 function httpGetAsync(theUrl, callback) {  //make API call 
     var xmlHttp = new XMLHttpRequest();
@@ -14,17 +15,13 @@ function httpGetAsync(theUrl, callback) {  //make API call
     xmlHttp.send(null);
 }
 
-function getCuteness(i) {  //calls the API results page i and adds those 10 results to the smolAnimals array, returns the array
-  httpGetAsync('https://www.googleapis.com/customsearch/v1?q=smol+animal&searchType=image&imgType=photo&key=AIzaSyCH4Rnngqjbt6YATpbHWNfvJshZYiG7xQQ&cx=001985054786931384945%3Avlg7_fusw5u&start=' + i, function(data) {
+function getCuteness() {  //calls the API results page i and adds those 10 results to the smolAnimals array, returns the array
+  httpGetAsync('https://www.googleapis.com/customsearch/v1?q=smol+animal&searchType=image&imgType=photo&key=AIzaSyCH4Rnngqjbt6YATpbHWNfvJshZYiG7xQQ&cx=001985054786931384945%3Avlg7_fusw5u&start=' + getRandomNumber(90), function(data) {
     var data = JSON.parse(data);
-    for (var j = 0; j < 10; j++) //iterates through the 10 search results on each page
-    {
     newAnimals = data.items;
-    smolAnimals.push(newAnimals[j]);
-    }
-    return smolAnimals;
+    return newAnimals;
   });
-   return smolAnimals;
+   return newAnimals;
  }
 
 function DrawCalendar() //creates boxes for each day in the div container
@@ -41,6 +38,10 @@ for (var i = 1; i <= daysInMonth; i++)
   }
 checkMonth(month); //checks to see if there is stored data from the current month
 getStoredAnimals(); //loads and displays any animals that have already been revealed
+if ((loadedAnimals === undefined) || (loadedAnimals.length < today))
+  {
+    getCuteness();  
+  }
 }
 
 function getDay(num) 
@@ -69,9 +70,12 @@ function getStoredAnimals()
 {
 chrome.storage.sync.get('revealedImages', function(images) //definitely having some issue with getting the array back out of storage in the right format - am somewhat confused with keys/values/etc.
   {
+    if (images != undefined)
+    {
     loadedAnimals = images.revealedImages;
     savedAnimals = images.revealedImages;
     displayStoredAnimals(loadedAnimals);
+    }
   });
 }
 
@@ -87,54 +91,42 @@ for (var j=1; j <= loadedAnimals.length; j++)
       var img = document.createElement('img');
       img.src = loadedAnimals[j-1].url;
       box.appendChild(img);
-    }
+    } 
 }
 
-function getRandomThing(array) {
+function getRandomNumber(x) {
   var randomNumberBetween0and1 = Math.random(); 
-  var highestNumber = array.length; 
-  var randomInteger = Math.floor(randomNumberBetween0and1 * highestNumber);
-  return array[randomInteger];
+  var randomInteger = Math.floor(randomNumberBetween0and1 * x);
+  return randomInteger;
 }
 
-
-function getImage()
-{ 
-  var img = document.createElement('img');
-  var animal = getRandomThing(smolAnimals); 
-  img.src = animal.link; 
-  return img;
-}
 
 function handleClick(event) {
     if(event.target.childElementCount > 0) 
       {
       return;
       }
-    var today = new Date().getDate();
     var date = event.target.innerHTML;
     if (date > today) 
       {
         return; 
       }
-        var img=getImage();
-        event.target.appendChild(img);
-        var todaysAnimal = {
-          day:date,
-          url:img.src,
+    var img = document.createElement('img');
+    var src = newAnimals[getRandomNumber(9)].link;
+    img.src = src;
+    event.target.appendChild(img);
+    var todaysAnimal = {
+       day:date,
+       url:img.src,
         };
-          savedAnimals.push(todaysAnimal);
-        storeClickedAnimals(savedAnimals); 
+    savedAnimals.push(todaysAnimal);
+    storeClickedAnimals(savedAnimals); 
 }
 
 function storeClickedAnimals(array) {  //puts the revealed animals and the current month into chrome storage
         var month = new Date().getMonth() + 1;
         chrome.storage.sync.set({'revealedImages': array, 'month': month}, function() {
         });
-};
-
-for (var i = 1; i < 62; i+=10) {   //NEED TO FIX THIS SO IT ONLY CALLS THE API ~1x MONTH 
-getCuteness(i); 
 };
 
 DrawCalendar(); 
