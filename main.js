@@ -70,6 +70,7 @@ function getStoredAnimals()
 chrome.storage.sync.get('revealedImages', function(images) //definitely having some issue with getting the array back out of storage in the right format - am somewhat confused with keys/values/etc.
   {
     loadedAnimals = images.revealedImages;
+    savedAnimals = images.revealedImages;
     displayStoredAnimals(loadedAnimals);
   });
 }
@@ -132,8 +133,8 @@ function storeClickedAnimals(array) {  //puts the revealed animals and the curre
         });
 };
 
-for (var i = 1; i < 62; i+=10) {
-getCuteness(i);
+for (var i = 1; i < 62; i+=10) {   //NEED TO FIX THIS SO IT ONLY CALLS THE API ~1x MONTH 
+getCuteness(i); 
 };
 
 DrawCalendar(); 
