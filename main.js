@@ -60,6 +60,8 @@ function checkMonth(currentMonth)
     var storedmonth = data.month;
     if (storedmonth != currentMonth) 
     {
+          console.log(storedmonth);
+          console.log(currentMonth);
           chrome.storage.sync.clear();
     }
   });
@@ -69,9 +71,12 @@ function getStoredAnimals()
 {
 chrome.storage.sync.get('revealedImages', function(images) //definitely having some issue with getting the array back out of storage in the right format - am somewhat confused with keys/values/etc.
   {
-    loadedAnimals = images.revealedImages;
-    savedAnimals = images.revealedImages;
+    if (images != undefined) 
+    {
+    var loadedAnimals = images.revealedImages;
+    savedAnimals = loadedAnimals;
     displayStoredAnimals(loadedAnimals);
+  }
   });
 }
 
@@ -123,7 +128,7 @@ function handleClick(event) {
           day:date,
           url:img.src,
         };
-          savedAnimals.push(todaysAnimal);
+        savedAnimals.push(todaysAnimal);
         storeClickedAnimals(savedAnimals); 
 }
 
