@@ -10,6 +10,7 @@
   "permissions": [
   		"storage", 
   		"https://www.googleapis.com/*"
+      "https://api.cognitive.microsoft.com/*"
   				 ]
 }
 

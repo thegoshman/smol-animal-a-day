@@ -11,15 +11,16 @@
               callback(xmlHttp.responseText);
       }
       xmlHttp.open("GET", theUrl, true); // true for asynchronous
+      xmlHttp.setRequestHeader('Ocp-Apim-Subscription-Key', '21addf49be0a458dae859d9c29ea47bd');
       xmlHttp.send(null);
   }
 
-  function getCuteness(i) {  //calls the API results page i and adds those 10 results to the smolAnimals array, returns the array
-    httpGetAsync('https://www.googleapis.com/customsearch/v1?q=smol+animal&searchType=image&imgType=photo&key=AIzaSyCH4Rnngqjbt6YATpbHWNfvJshZYiG7xQQ&cx=001985054786931384945%3Avlg7_fusw5u&start=' + i, function(data) {
+  function getCuteness() {  //calls the API results page i and adds those 10 results to the smolAnimals array, returns the array
+    httpGetAsync('https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=smol+animals+photo&count=150&imageType=photo', function(data) {
       var data = JSON.parse(data);
-      for (var j = 0; j < 10; j++) //iterates through the 10 search results on each page
+      for (var j = 0; j < 150; j++) 
       {
-      newAnimals = data.items;
+      newAnimals = data.value;
       smolAnimals.push(newAnimals[j]);
       }
       return smolAnimals;
@@ -107,7 +108,7 @@
   { 
     var img = document.createElement('img');
     var animal = getRandomThing(smolAnimals); 
-    img.src = animal.link; 
+    img.src = animal.contentUrl; 
     return img;
   }
 
@@ -138,8 +139,5 @@
           });
   };
 
-  for (var i = 1; i < 62; i+=10) {   //NEED TO FIX THIS SO IT ONLY CALLS THE API ~1x MONTH 
-  getCuteness(i); 
-  };
-
+  getCuteness(); 
   DrawCalendar(); 
