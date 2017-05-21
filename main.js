@@ -2,7 +2,6 @@ var newAnimals;
 var smolAnimals = [];
 var savedAnimals = [];
 var loadedAnimals = [];
-var i;
 
 function httpGetAsync(theUrl, callback) {  //make API call 
     var xmlHttp = new XMLHttpRequest();
@@ -14,8 +13,10 @@ function httpGetAsync(theUrl, callback) {  //make API call
     xmlHttp.send(null);
 }
 
-function getCuteness(i) {  //calls the API results page i and adds those 10 results to the smolAnimals array, returns the array
-  httpGetAsync('https://www.googleapis.com/customsearch/v1?q=smol+animal&searchType=image&imgType=photo&key=AIzaSyCH4Rnngqjbt6YATpbHWNfvJshZYiG7xQQ&cx=001985054786931384945%3Avlg7_fusw5u&start=' + i, function(data) {
+function getCuteness() {  //calls the API results page i and adds those 10 results to the smolAnimals array, returns the array
+    var randomNumberBetween0and1 = Math.random(); 
+    var randomInteger = Math.floor(randomNumberBetween0and1 * 91);
+    httpGetAsync('https://www.googleapis.com/customsearch/v1?q=smol+animal&searchType=image&imgType=photo&key=AIzaSyCH4Rnngqjbt6YATpbHWNfvJshZYiG7xQQ&cx=001985054786931384945%3Avlg7_fusw5u&start=' + randomInteger, function(data) {
     var data = JSON.parse(data);
     for (var j = 0; j < 10; j++) //iterates through the 10 search results on each page
     {
@@ -60,8 +61,6 @@ function checkMonth(currentMonth)
     var storedmonth = data.month;
     if (storedmonth != currentMonth) 
     {
-          console.log(storedmonth);
-          console.log(currentMonth);
           chrome.storage.sync.clear();
     }
   });
@@ -128,7 +127,8 @@ function handleClick(event) {
           day:date,
           url:img.src,
         };
-        savedAnimals.push(todaysAnimal);
+      
+        consavedAnimals.push(todaysAnimal);
         storeClickedAnimals(savedAnimals); 
 }
 
@@ -137,9 +137,6 @@ function storeClickedAnimals(array) {  //puts the revealed animals and the curre
         chrome.storage.sync.set({'revealedImages': array, 'month': month}, function() {
         });
 };
-
-for (var i = 1; i < 62; i+=10) {   //NEED TO FIX THIS SO IT ONLY CALLS THE API ~1x MONTH 
-getCuteness(i); 
-};
-
+ 
+getCuteness(); 
 DrawCalendar(); 
