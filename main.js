@@ -84,11 +84,13 @@ function displayStoredAnimals(loadedAnimals)
     {
     return;
   }
-for (var j=1; j <= loadedAnimals.length; j++)
+for (var j=0; j < loadedAnimals.length; j++)
     {
-      var box = document.getElementById(j);
+      var day = loadedAnimals[j].day;
+      var url = loadedAnimals[j].url;
+      var box = document.getElementById(day);
       var img = document.createElement('img');
-      img.src = loadedAnimals[j-1].url;
+      img.src = url;
       box.appendChild(img);
     }
 }
