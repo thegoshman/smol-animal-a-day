@@ -1,11 +1,26 @@
+h1 { 
+font-family: 'Barrio', cursive;
+}
+
+p {
+font-family: 'Raleway', sans-serif;
+}
+
+.small {
+  font-size: x-small;
+}
+
 .day {
   height: 12vw;
   width: 12vw;
-  border: 1px solid #777;
+  border: 5px solid deeppink;
   float: left;
   display: inline-block;
   margin: 5px;
   position: relative;
+  font-family: 'Raleway', sans-serif;
+  font-style: bold;
+  color: blue;
 
 }
 
@@ -36,4 +51,8 @@
   	z-index: -1;
   	top: 0;
   	right: 0;
+}
+
+.container {
+  background-color: pink;
 }

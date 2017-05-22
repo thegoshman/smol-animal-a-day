@@ -1,0 +1,9 @@
+Click each box to reveal a smol animal. 
+
+You cannot click on boxes for future dates. 
+
+The calendar will reset on the first of the month.
+
+DISCLAIMER: These images all come from an internet search API. I am not responsible for the content displayed here. If you don't like any of the images you get, try opening your console and running chrome.storage.sync.clear(). This will reset all of the images for the month.
+
+Questions? Comments? sarah@sarahgoshman.com

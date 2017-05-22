@@ -18,6 +18,7 @@
   function getCuteness() {  //calls the API results page i and adds those 10 results to the smolAnimals array, returns the array
     httpGetAsync('https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=smol+animals+photo&count=150&imageType=photo', function(data) {
       var data = JSON.parse(data);
+      console.log("Getting cuteness!")
       for (var j = 0; j < 150; j++) 
       {
       newAnimals = data.value;
@@ -76,8 +77,13 @@
       savedAnimals = loadedAnimals;
       displayStoredAnimals(loadedAnimals);
     }
-    });
-  }
+   var day = new Date().getDate();
+   if (savedAnimals.length < day) 
+    {
+      getCuteness();
+    }
+  });
+}
 
   function displayStoredAnimals(loadedAnimals) 
   {
@@ -139,5 +145,4 @@
           });
   };
 
-  getCuteness(); 
   DrawCalendar(); 
