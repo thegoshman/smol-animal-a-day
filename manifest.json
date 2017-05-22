@@ -1,19 +1,23 @@
 {
   "name": "Daily Smol Animal Calendar",
   "description": "A new picture of a smol animal every day!",
-  "version": "0.0",
+  "version": "0.1",
   "incognito": "split",
-  "chrome_url_overrides": {
-    "newtab": "smol-animals.html"
-  },
-  "icons": { "16": "icon16.png",
-           "48": "icon48.png",
-          "128": "icon128.png"},
+  "chrome_url_overrides": 
+    {
+      "newtab": "smol-animals.html"
+    },
+  "icons": 
+    { 
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    },
   "manifest_version": 2, 
-  "permissions": [
+  "permissions": 
+    [
   		"storage", 
-  		"https://www.googleapis.com/*"
       "https://api.cognitive.microsoft.com/*"
-  				 ]
+  	]
 }
 
